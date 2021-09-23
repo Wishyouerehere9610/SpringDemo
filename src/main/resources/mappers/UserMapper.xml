@@ -28,7 +28,7 @@
         from singer
         where id = #{id}
     </delete>
-    <select id="findAll" resultType="User">
+    <select id="findAll" resultType="com.example.springdemo.entity.User">
         SELECT *
         FROM singer
     </select>
