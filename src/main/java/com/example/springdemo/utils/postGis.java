@@ -9,7 +9,7 @@ import java.util.List;
 public class postGis {
     public static void main(String[] args) throws ParseException {
         List<String> data = new ArrayList<>();
-        String sql = "select st_area(t.geom) from gis.cn_sheng_data t where t.gid=798;";
+        String sql = "select st_area(t.geom) from gis.cn_shi_data t where t.gid=798;";
         try {
             Class.forName("org.postgresql.Driver");
             Connection conn = DriverManager
@@ -32,9 +32,6 @@ public class postGis {
         }
 
 
-//        String sql = "select st_area(t.geom) from gis.cn_sheng_data t where t.gid=798;";
-//        List<Map<String, Object>> result = jdbc.queryForList(sql);
-//        System.out.println(result);
     }
 
 }
