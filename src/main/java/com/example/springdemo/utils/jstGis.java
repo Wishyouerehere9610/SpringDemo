@@ -1,52 +1,55 @@
 package com.example.springdemo.utils;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class jstGis {
 
     public static void main(String[] args) throws ParseException {
         GeometryFactory geometryFactory = new GeometryFactory();
         WKTReader reader = new WKTReader(geometryFactory);
-        Polygon polygon = (Polygon) reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
-        System.out.println(polygon.getArea());
+        List<String> data = new ArrayList<>();
+        List<String> result = new ArrayList<>();
+        String sql = "select st_astext(t.geom) from gis.cn_shi_data t where t.gid<5;";
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection conn = DriverManager
+                    .getConnection("jdbc:postgresql://10.101.16.66:5432/test",
+                            "gpadmin", "7cFe8Hjf9mX");
+            System.out.println("Opened database successfully");
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                String val = rs.getString(1);
+                data.add(val);
+
+            }
+            st.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        for (int i = 0; i < data.size(); i++) {
+            MultiPolygon multipolygon = (MultiPolygon) reader.read(data.get(i));
+            double area = multipolygon.getArea();
+            BigDecimal bd1 = new BigDecimal(area);
+            result.add(bd1.toPlainString());
+        }
+        System.out.println(result);
+
     }
-
-
-//    private static Geometry lonlat2WebMactor(Geometry geom) {
-//        Geometry res = null;
-//        try {
-//            CoordinateReferenceSystem crsTarget = CRS.decode("EPSG:3857");
-//            // 投影转换
-//            MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, crsTarget);
-//            res = JTS.transform(geom, transform);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return res;
-//    }
-
-//    public static double getAreaByGeoJson(String geojson) {
-//        JSONObject obj = JSONObject.parseObject(geojson);
-//        JSONArray arr = obj.getJSONArray("features");
-//        JSONObject nodeObj = JSONObject.parseObject(arr.getString(0));
-//        double area = 0;
-//        try {
-//            GeometryJSON gjson = new GeometryJSON(15);
-//            Reader reader = new StringReader(nodeObj.toString());
-//            Geometry geom = gjson.read(reader);
-//            geom = lonlat2WebMactor(geom);
-//            if(geom != null) {
-//                area = geom.getArea();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return area;
-//    }
-
 }
+
+
