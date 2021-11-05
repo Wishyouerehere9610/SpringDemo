@@ -13,12 +13,12 @@ public class jtsGis {
     public static void main(String[] args) throws ParseException {
         String sql1w = "select st_astext(t.geom) from gis.osm_buildings_a_free_1w t;";
         String sql10w = "select st_astext(t.geom) from gis.osm_buildings_a_free_10w t;";
-//        String sql100w = "select st_astext(t.geom) from gis.osm_buildings_a_free_100w t;";
+        String sql100w = "select st_astext(t.geom) from gis.osm_buildings_a_free_100w t;";
         String[] sqlObjects = new String[]{sql1w, sql10w};
         HashMap map = new HashMap<>();
         map.put(sql1w, "1w面数据");
         map.put(sql10w, "10w面数据");
-//        map.put(sql100w, "100w面数据");
+        map.put(sql100w, "100w面数据");
         System.out.println("--------------------------JTS测试面积----------------------------------------------------");
         for (String sql : sqlObjects) {
             long startTime = System.currentTimeMillis();   //获取开始时间
