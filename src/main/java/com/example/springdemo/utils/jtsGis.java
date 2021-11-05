@@ -1,68 +1,55 @@
 package com.example.springdemo.utils;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static com.example.springdemo.utils.JTSUtil.*;
+import static com.example.springdemo.utils.databaseUtil.getConnection;
 
 public class jtsGis {
 
     public static void main(String[] args) throws ParseException {
-        GeometryFactory geometryFactory = new GeometryFactory();
-        WKTReader reader = new WKTReader(geometryFactory);
-        List<String> data = new ArrayList<>();
-        List<Geometry> result = new ArrayList<>();
-        String sql = "select st_astext(t.geom) from gis.osm_buildings_a_free_1 t where t.gid<10000;";
-        long startTime = System.currentTimeMillis();   //获取开始时间
-        try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager
-                    .getConnection("jdbc:postgresql://10.101.16.66:5432/test",
-                            "gpadmin", "7cFe8Hjf9mX");
-            System.out.println("Opened database successfully");
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                String val = rs.getString(1);
-                data.add(val);
-
-            }
-            st.close();
-            conn.close();
-            System.out.println("Close database successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+        String sql1w = "select st_astext(t.geom) from gis.osm_buildings_a_free_1w t;";
+        String sql10w = "select st_astext(t.geom) from gis.osm_buildings_a_free_10w t;";
+//        String sql100w = "select st_astext(t.geom) from gis.osm_buildings_a_free_100w t;";
+        String[] sqlObjects = new String[]{sql1w, sql10w};
+        HashMap map = new HashMap<>();
+        map.put(sql1w, "1w面数据");
+        map.put(sql10w, "10w面数据");
+//        map.put(sql100w, "100w面数据");
+        System.out.println("--------------------------JTS测试面积----------------------------------------------------");
+        for (String sql : sqlObjects) {
+            long startTime = System.currentTimeMillis();   //获取开始时间
+            List<String> data = getConnection(sql);
+            //测试面积计算
+            calArea(data);
+            long endTime = System.currentTimeMillis(); //获取结束时间
+            double time = endTime - startTime;
+            System.out.println("使用JTS面积算法计算" + map.get(sql) + "耗时： " + time + "ms");
         }
-        for (int i = 0; i < data.size(); i++) {
-            MultiPolygon multipolygon = (MultiPolygon) reader.read(data.get(i));
-            //计算面积
-//            double area = multipolygon.getArea();
-//            BigDecimal bd1 = new BigDecimal(area);
-            //计算周长
-//            double perimeter = multipolygon.getLength();
-//            BigDecimal bd1 = new BigDecimal(perimeter);
-            //计算缓冲区
-            Geometry buffer = multipolygon.buffer(10);
-            result.add(buffer);
-//            result.add(bd1.toPlainString());
+        System.out.println("--------------------------JTS测试周长----------------------------------------------------");
+        for (String sql : sqlObjects) {
+            long startTime = System.currentTimeMillis();   //获取开始时间
+            List<String> data = getConnection(sql);
+            //测试周长计算
+            calPerimeter(data);
+            long endTime = System.currentTimeMillis(); //获取结束时间
+            double time = endTime - startTime;
+            System.out.println("使用JTS周长算法计算" + map.get(sql) + "耗时： " + time + "ms");
         }
-//        System.out.println(result);
-        long endTime = System.currentTimeMillis(); //获取结束时间
-        double time = endTime - startTime;
-        System.out.println("程序运行时间： " + time + "ms");
+        System.out.println("--------------------------JTS测试缓冲区----------------------------------------------------");
+        for (String sql : sqlObjects) {
+            long startTime = System.currentTimeMillis();   //获取开始时间
+            List<String> data = getConnection(sql);
+            //测试缓冲区计算
+            getBuffer(data);
+            long endTime = System.currentTimeMillis(); //获取结束时间
+            double time = endTime - startTime;
+            System.out.println("使用JTS缓冲区算法计算" + map.get(sql) + "耗时： " + time + "ms");
+        }
 
 
     }
 }
-
-
