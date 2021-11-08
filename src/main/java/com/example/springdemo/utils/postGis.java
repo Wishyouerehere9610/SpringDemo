@@ -38,8 +38,7 @@ public class postGis {
         for (String tableName : tableObjects) {
             String sql = "select st_astext(ST_Centroid(t.geom)) from " + tableName;
             long startTime = System.currentTimeMillis();   //获取开始时间
-            List<String> result = getConnection(sql);
-            System.out.println(result.size());
+            getConnection(sql);
             long endTime = System.currentTimeMillis(); //获取结束时间
             double time = endTime - startTime;
             System.out.println("使用postGis几何中心算法计算" + map.get(tableName) + "耗时： " + time + "ms");
