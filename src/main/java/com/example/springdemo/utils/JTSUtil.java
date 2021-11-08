@@ -3,6 +3,7 @@ package com.example.springdemo.utils;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
@@ -47,6 +48,18 @@ public class JTSUtil {
             MultiPolygon multipolygon = (MultiPolygon) reader.read(data.get(i));
             Geometry buffer = multipolygon.buffer(10);
             result.add(buffer);
+        }
+        return result;
+    }
+
+    public static List<Point> getCentroid(List<String> data) throws ParseException {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        WKTReader reader = new WKTReader(geometryFactory);
+        List<Point> result = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            MultiPolygon multipolygon = (MultiPolygon) reader.read(data.get(i));
+            Point centroid = multipolygon.getCentroid();
+            result.add(centroid);
         }
         return result;
     }
