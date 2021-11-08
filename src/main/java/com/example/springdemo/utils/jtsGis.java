@@ -20,16 +20,6 @@ public class jtsGis {
         map.put(sql1w, "1w面数据");
         map.put(sql10w, "10w面数据");
         map.put(sql100w, "100w面数据");
-        System.out.println("--------------------------JTS测试几何中心----------------------------------------------------");
-        for (String sql : sqlObjects) {
-            long startTime = System.currentTimeMillis();   //获取开始时间
-            List<String> data = getConnection(sql);
-            //测试面积计算
-            getCentroid(data);
-            long endTime = System.currentTimeMillis(); //获取结束时间
-            double time = endTime - startTime;
-            System.out.println("使用JTS几何中心算法计算" + map.get(sql) + "耗时： " + time + "ms");
-        }
         System.out.println("--------------------------JTS测试面积----------------------------------------------------");
         for (String sql : sqlObjects) {
             long startTime = System.currentTimeMillis();   //获取开始时间
@@ -49,6 +39,16 @@ public class jtsGis {
             long endTime = System.currentTimeMillis(); //获取结束时间
             double time = endTime - startTime;
             System.out.println("使用JTS周长算法计算" + map.get(sql) + "耗时： " + time + "ms");
+        }
+        System.out.println("--------------------------JTS测试几何中心----------------------------------------------------");
+        for (String sql : sqlObjects) {
+            long startTime = System.currentTimeMillis();   //获取开始时间
+            List<String> data = getConnection(sql);
+            //测试面积计算
+            getCentroid(data);
+            long endTime = System.currentTimeMillis(); //获取结束时间
+            double time = endTime - startTime;
+            System.out.println("使用JTS几何中心算法计算" + map.get(sql) + "耗时： " + time + "ms");
         }
         System.out.println("--------------------------JTS测试缓冲区----------------------------------------------------");
         for (String sql : sqlObjects) {
