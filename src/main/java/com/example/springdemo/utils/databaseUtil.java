@@ -33,4 +33,24 @@ public class databaseUtil {
         return data;
     }
 
+    public static void executeSql(String sql) {
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection conn = DriverManager
+                    .getConnection("jdbc:postgresql://10.101.16.66:5432/test",
+                            "gpadmin", "7cFe8Hjf9mX");
+//            System.out.println("Opened database successfully");
+            Statement st = conn.createStatement();
+            st.executeUpdate(sql);
+            st.close();
+            conn.close();
+//            System.out.println("Close database successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+
+    }
+
 }
