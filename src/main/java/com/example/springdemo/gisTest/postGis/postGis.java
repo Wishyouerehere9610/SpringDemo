@@ -1,11 +1,11 @@
-package com.example.springdemo.test;
+package com.example.springdemo.gisTest.postGis;
 
 import com.vividsolutions.jts.io.ParseException;
 
 import java.util.HashMap;
 import java.util.List;
 
-import static com.example.springdemo.utils.databaseUtil.getConnection;
+import static com.example.springdemo.gisUtils.dbUtil.databaseUtil.getConnection;
 
 public class postGis {
     public static void main(String[] args) throws ParseException {

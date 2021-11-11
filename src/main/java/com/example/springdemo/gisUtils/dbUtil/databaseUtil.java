@@ -1,4 +1,4 @@
-package com.example.springdemo.utils;
+package com.example.springdemo.gisUtils.dbUtil;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -51,6 +51,34 @@ public class databaseUtil {
             System.exit(0);
         }
 
+    }
+
+    //
+    public static List<String> db_coordinates_to_wkt(String sql) {
+        List<String> data = new ArrayList<>();
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection conn = DriverManager
+                    .getConnection("jdbc:postgresql://10.5.24.18:2345/aiworks",
+                            "gpadmin", "gp2020");
+            System.out.println("Opened database successfully");
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                String longtitude = rs.getString(1);
+                String latitude = rs.getString(2);
+                String point = "POINT(" + longtitude + " " + latitude+")";
+                data.add(point);
+            }
+            st.close();
+            conn.close();
+            System.out.println("Close database successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return data;
     }
 
 }

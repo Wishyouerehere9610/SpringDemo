@@ -1,4 +1,4 @@
-package com.example.springdemo.utils;
+package com.example.springdemo.gisUtils.jtsUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;

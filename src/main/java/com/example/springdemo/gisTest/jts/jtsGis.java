@@ -1,13 +1,12 @@
-package com.example.springdemo.utils;
+package com.example.springdemo.gisTest.jts;
 
-import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.ParseException;
 
 import java.util.HashMap;
 import java.util.List;
 
-import static com.example.springdemo.utils.JTSUtil.*;
-import static com.example.springdemo.utils.databaseUtil.getConnection;
+import static com.example.springdemo.gisUtils.jtsUtil.JTSUtil.*;
+import static com.example.springdemo.gisUtils.dbUtil.databaseUtil.getConnection;
 
 public class jtsGis {
 

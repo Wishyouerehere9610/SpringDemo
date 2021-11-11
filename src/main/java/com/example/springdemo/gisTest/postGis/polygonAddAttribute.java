@@ -1,14 +1,10 @@
-package com.example.springdemo.test;
+package com.example.springdemo.gisTest.postGis;
 
 import com.vividsolutions.jts.io.ParseException;
 
 import java.util.HashMap;
-import java.util.List;
 
-import static com.example.springdemo.utils.JTSUtil.*;
-import static com.example.springdemo.utils.JTSUtil.getBuffer;
-import static com.example.springdemo.utils.databaseUtil.getConnection;
-import static com.example.springdemo.utils.postGisUtil.*;
+import static com.example.springdemo.gisUtils.postGisUtil.postGisUtil.*;
 
 public class polygonAddAttribute {
     public static void main(String[] args) throws ParseException {

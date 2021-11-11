@@ -1,10 +1,10 @@
-package com.example.springdemo.test;
+package com.example.springdemo.gisTest.postGis;
 
 import com.vividsolutions.jts.io.ParseException;
 
 import java.util.HashMap;
 
-import static com.example.springdemo.utils.postGisUtil.*;
+import static com.example.springdemo.gisUtils.postGisUtil.postGisUtil.*;
 
 public class lineAddAtrribute {
     public static void main(String[] args) throws ParseException {

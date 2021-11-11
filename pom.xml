@@ -85,7 +85,13 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.61</version>
         </dependency>
-<!--        <dependency>-->
+        <dependency>
+            <groupId>io.github.matthieun</groupId>
+            <artifactId>wkb-wkt-converter</artifactId>
+            <version>1.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--        <dependency>-->
 <!--            <groupId>org.locationtech.jts</groupId>-->
 <!--            <artifactId>jts</artifactId>-->
 <!--            <version>1.13</version>-->

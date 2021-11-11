@@ -1,7 +1,6 @@
-package com.example.springdemo.utils;
+package com.example.springdemo.gisUtils.postGisUtil;
 
-import static com.example.springdemo.utils.databaseUtil.executeSql;
-import static com.example.springdemo.utils.databaseUtil.getConnection;
+import static com.example.springdemo.gisUtils.dbUtil.databaseUtil.executeSql;
 
 public class postGisUtil {
     public static void add_area(String tbName) {
@@ -26,6 +25,15 @@ public class postGisUtil {
         String drop_lengthCol = "ALTER TABLE " + tbName + " DROP COLUMN IF EXISTS new_length";
         executeSql(drop_lengthCol);
         String add_lengthCol = "ALTER TABLE " + tbName + " ADD new_length double precision DEFAULT 0";
+        executeSql(add_lengthCol);
+        String update_lengthCol = "UPDATE " + tbName + " d set new_length=(select st_length(t.geom) from " + tbName + " t where t.gid=d.gid)";
+        executeSql(update_lengthCol);
+    }
+
+    public static void csv_add_geom(String tbName) {
+        String drop_lengthCol = "ALTER TABLE " + tbName + " DROP COLUMN IF EXISTS new_geom";
+        executeSql(drop_lengthCol);
+        String add_lengthCol = "ALTER TABLE " + tbName + " ADD new_geom geometry(Point,4326);";
         executeSql(add_lengthCol);
         String update_lengthCol = "UPDATE " + tbName + " d set new_length=(select st_length(t.geom) from " + tbName + " t where t.gid=d.gid)";
         executeSql(update_lengthCol);
