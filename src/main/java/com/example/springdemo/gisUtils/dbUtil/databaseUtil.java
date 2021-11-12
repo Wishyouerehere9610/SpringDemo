@@ -55,14 +55,14 @@ public class databaseUtil {
 
     }
 
-    //update nebula-Gp 数据表 coordinates_to_wkt预处理 sql
+    //update Gpadmin 数据表 coordinates_to_wkt预处理 sql
     public static List<String> db_coordinates_to_wkt(String sql) {
         List<String> data = new ArrayList<>();
         try {
             Class.forName("org.postgresql.Driver");
             Connection conn = DriverManager
-                    .getConnection("jdbc:postgresql://10.5.24.18:2345/aiworks",
-                            "gpadmin", "gp2020");
+                    .getConnection("jdbc:postgresql://10.101.16.66:5432/test",
+                            "gpadmin", "7cFe8Hjf9mX");
             System.out.println("Opened database successfully");
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
