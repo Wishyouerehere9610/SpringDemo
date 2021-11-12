@@ -1,6 +1,15 @@
 package com.example.springdemo.gisUtils.postGisUtil;
 
-import static com.example.springdemo.gisUtils.dbUtil.databaseUtil.executeSql;
+import com.vividsolutions.jts.io.ParseException;
+
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.example.springdemo.gisUtils.dbUtil.databaseUtil.*;
+import static com.example.springdemo.gisUtils.postGisUtil.pointWktToWkb.wtkToWkb;
 
 public class postGisUtil {
     public static void add_area(String tbName) {
@@ -30,13 +39,26 @@ public class postGisUtil {
         executeSql(update_lengthCol);
     }
 
-    public static void csv_add_geom(String tbName) {
+    public static void csv_add_geom(String tbName, String longitude, String latitude) throws ParseException {
         String drop_lengthCol = "ALTER TABLE " + tbName + " DROP COLUMN IF EXISTS new_geom";
-        executeSql(drop_lengthCol);
+        updateGPSql(drop_lengthCol);
         String add_lengthCol = "ALTER TABLE " + tbName + " ADD new_geom geometry(Point,4326);";
-        executeSql(add_lengthCol);
-        String update_lengthCol = "UPDATE " + tbName + " d set new_length=(select st_length(t.geom) from " + tbName + " t where t.gid=d.gid)";
-        executeSql(update_lengthCol);
+        updateGPSql(add_lengthCol);
+        String sql = "select " + longitude + ", " + latitude + " from " + tbName + " order by _record_id_;";
+        List<String> points = db_coordinates_to_wkt(sql);
+        List<String> wkb_list = new ArrayList<>();
+        for (int i = 0; i < points.size(); i++) {
+            String point = points.get(i);
+            String point_wkb = wtkToWkb(point);
+            wkb_list.add(point_wkb);
+        }
+        //生成对应的record_id
+        List<Integer> record_ids = Stream.iterate(1, item -> item + 1).limit(wkb_list.size()).collect(Collectors.toList());
+        for (int x = 0; x < wkb_list.size(); x++) {
+            String insertSql = "UPDATE " + tbName + " set new_geom=('SRID=4326;" + wkb_list.get(x) + "') where _record_id_ = " + record_ids.get(x);
+            updateGPSql(insertSql);
+        }
+
     }
 
 
