@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import static com.example.springdemo.gisUtils.postGisUtil.postGisUtil.*;
 
-public class lineAddAtrribute {
+public class lineAddAttribute {
     public static void main(String[] args) throws ParseException {
         String[] tableObjects = new String[]{"gis.gis_osm_roads_free_1w",
                 "gis.gis_osm_roads_free_10w",
