@@ -1,0 +1,171 @@
+[
+  {
+    "data": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -76.53063297271729,
+              39.18174077994108
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                102.0,
+                0.0
+              ],
+              [
+                103.0,
+                1.0
+              ],
+              [
+                104.0,
+                0.0
+              ],
+              [
+                105.0,
+                1.0
+              ]
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  100.0,
+                  0.0
+                ],
+                [
+                  101.0,
+                  0.0
+                ],
+                [
+                  101.0,
+                  1.0
+                ],
+                [
+                  100.0,
+                  1.0
+                ],
+                [
+                  100.0,
+                  0.0
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "MultiPoint",
+            "coordinates": [
+              [
+                30,
+                10
+              ],
+              [
+                10,
+                30
+              ]
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "MultiLineString",
+            "coordinates": [
+              [
+                [
+                  30,
+                  10
+                ],
+                [
+                  10,
+                  30
+                ],
+                [
+                  40,
+                  40
+                ]
+              ],
+              [
+                [
+                  30,
+                  10
+                ],
+                [
+                  10,
+                  30
+                ],
+                [
+                  40,
+                  40
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    10,
+                    10
+                  ],
+                  [
+                    20,
+                    20
+                  ],
+                  [
+                    40,
+                    40
+                  ]
+                ]
+              ],
+              [
+                [
+                  [
+                    30,
+                    10
+                  ],
+                  [
+                    10,
+                    30
+                  ],
+                  [
+                    40,
+                    40
+                  ]
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

@@ -10,12 +10,11 @@ import static com.example.springdemo.gisUtils.postGisUtil.postGisUtil.csv_add_ge
 
 public class coordinatesToGemo {
     public static void main(String[] args) throws ParseException, IOException {
-        String[] tableObjects = new String[]{"gis.csv_1k", "gis.csv_1w"};
-//                "gis.csv_1w","gis.csv_4w"};
+        String[] tableObjects = new String[]{"gis.csv_10w", "gis.csv_5w", "gis.csv_1w"};
         HashMap map = new HashMap<>();
-        map.put("gis.csv_1k", "1kCSV数据");
         map.put("gis.csv_1w", "1wCSV数据");
-//        map.put("gis.csv_4w", "4wCSV数据");
+        map.put("gis.csv_5w", "5wCSV数据");
+        map.put("gis.csv_10w", "10wCSV数据");
         System.out.println("--------------------------csv入库转带有geometry字段表----------------------------------------------------");
         for (String tableName : tableObjects) {
             long startTime = System.currentTimeMillis();   //获取开始时间
