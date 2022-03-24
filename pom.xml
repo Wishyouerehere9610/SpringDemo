@@ -15,6 +15,7 @@
     <description>SpringDemo</description>
     <properties>
         <java.version>1.8</java.version>
+        <geotools.version>18.4</geotools.version>
     </properties>
     <dependencies>
         <!--web核心依赖-->
@@ -66,7 +67,7 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-<!--        gis-->
+        <!--        gis-->
         <dependency>
             <groupId>com.vividsolutions</groupId>
             <artifactId>jts</artifactId>
@@ -92,12 +93,80 @@
             <scope>compile</scope>
         </dependency>
         <!--        <dependency>-->
-<!--            <groupId>org.locationtech.jts</groupId>-->
-<!--            <artifactId>jts</artifactId>-->
-<!--            <version>1.13</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
+        <!--            <groupId>org.locationtech.jts</groupId>-->
+        <!--            <artifactId>jts</artifactId>-->
+        <!--            <version>1.13</version>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-shapefile</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geojson</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-epsg-extension</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-referencing</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId> org.apache.cassandra</groupId>
+            <artifactId>cassandra-all</artifactId>
+            <version>0.8.1</version>
+
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>osgeo</id>
+            <name>OSGeo Release Repository</name>
+            <url>https://repo.osgeo.org/repository/release/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>osgeo-snapshot</id>
+            <name>OSGeo Snapshot Repository</name>
+            <url>https://repo.osgeo.org/repository/snapshot/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
 
 
     <build>

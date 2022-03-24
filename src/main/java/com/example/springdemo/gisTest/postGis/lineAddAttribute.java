@@ -24,5 +24,6 @@ public class lineAddAttribute {
             System.out.println(map.get(tableName) + "length属性生成耗时： " + time + "ms");
         }
 
+
     }
 }

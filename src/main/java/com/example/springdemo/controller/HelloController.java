@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
     @RequestMapping("/hello")
-    public String sayHi(){
+    public String sayHi() {
         return "Hello ZedDee";
     }
 }

@@ -1,8 +1,12 @@
 package com.example.springdemo.gisUtils.postGisUtil;
 
+import com.alibaba.fastjson.JSONObject;
 import com.vividsolutions.jts.io.ParseException;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.springdemo.gisUtils.dbUtil.databaseUtil.executeSql;
 import static com.example.springdemo.gisUtils.dbUtil.databaseUtil.getConnection;
@@ -53,14 +57,123 @@ public class postGisUtil {
         executeSql(drop_old);
     }
 
-    public static List<String> geojsonConverter(String tbName) throws ParseException {
-        String geojsonSql = "with a as(select t.*, st_asgeojson(geom)::json as geometry from " + tbName + ")," +
+    public static JSONObject geojsonConverter(String tbName) throws ParseException {
+        String geojsonSql = "with a as(select t.*, st_asgeojson(geom)::json as geometry from " + tbName + " t)," +
                 "feature as(select 'Feature' as type,(select row_to_json(fields) from (select a.*) as fields) as properties from a)," +
                 "features as(select 'FeatureCollection' as type,array_to_json(array_agg(feature.*)) as features from feature)" +
                 "select row_to_json(features.*) from features;";
         List<String> data = getConnection(geojsonSql);
-        return data;
+        JSONObject json = JSONObject.parseObject(data.get(0));
+        //循环json处理并保存
+        Iterator<Object> features = json.getJSONArray("features").iterator();
+        while (features.hasNext()) {
+            JSONObject next = (JSONObject) features.next();
+            next.getJSONObject("properties").remove("geom");
+            next.getJSONObject("properties").remove("geometry");
+        }
+        return json;
     }
+
+    public static Float addAll(String unit) {
+        String sql = "select sum(t.st_perimeter) from gis.osm_buildings_a_free_1w_new t;";
+        String result = getConnection(sql).get(0);
+        Float new_result = Float.valueOf(result);
+        int rate = 0;
+        switch (unit) {
+            case "km":
+                rate = 1000;
+                return new_result / rate;
+            case "m":
+            case "m2":
+                rate = 1;
+                return new_result / rate;
+            case "km2":
+                rate = 1000000;
+                return new_result / rate;
+        }
+        return new_result;
+    }
+
+    public static String getTbColunmnName(String sourceTbName) {
+//        String tbName = sourceTbName.substring(9);
+        String getTbColunmnNameSql = "select column_name from INFORMATION_SCHEMA.Columns where table_name = " + sourceTbName + ";";
+        return getTbColunmnNameSql;
+    }
+
+    public static String createTabsName(List<String> names, String name) {
+        String newName;
+        if (names.size() == 0) {
+            newName = name;
+        } else {
+            List<String> defaultName = names.stream()
+                    .filter(n -> n.matches("^" + name + "(\\([0-9]+\\))?$"))
+                    .collect(Collectors.toList());
+            List<Integer> order = defaultName.stream()
+                    .map(s -> s.equals(name) ? "0" : s.substring(name.length() + 1, s.length() - 1))
+                    .map(Integer::parseInt)
+                    .sorted()
+                    .collect(Collectors.toList());
+            if (order.size() == 0) {
+                newName = name;
+            } else {
+                newName = String.format(name + "(%d)", order.get(order.size() - 1) + 1);
+            }
+        }
+        return newName;
+    }
+
+
+    public static String checkColName(String sourceTbName, String columnName) {
+        String countSql = getTbColunmnName(sourceTbName);
+        List<String> columns = getConnection(countSql);
+        String newName = createTabsName(columns, columnName);
+        return newName;
+    }
+
+    public static int check() {
+        List<String> sourceCol = new ArrayList<String>();
+        sourceCol.add("1");
+        sourceCol.add("2");
+        sourceCol.add("3");
+        List<String> viewCol = new ArrayList<String>();
+        viewCol.add("1");
+        viewCol.add("2");
+        viewCol.add("3");
+
+        viewCol.removeAll(sourceCol);
+        if (viewCol.size() == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
+
+
+    }
+
+    public static String listToString(List list, char separator) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i)).append(separator);
+        }
+        return list.isEmpty() ? "" : sb.toString().substring(0, sb.toString().length() - 1);
+    }
+
+
+    public static void test() {
+        List<String> abc = new ArrayList<>();
+        abc.add("gid");
+        abc.add("name");
+        abc.add("geom");
+        if (abc.contains("geom") == true) {
+            abc.remove("geom");
+        }
+        String cols = listToString(abc, ',');
+        String sql = "CREATE VIEW view_test_list3 " +
+                "AS SELECT " + cols +
+                " from gis.geojsonpolygon_100;";
+        executeSql(sql);
+    }
+
 
 //    public static void csv_add_geom(String tbName, String longitude, String latitude) throws ParseException {
 //        String drop_lengthCol = "ALTER TABLE " + tbName + " DROP COLUMN IF EXISTS new_geom";

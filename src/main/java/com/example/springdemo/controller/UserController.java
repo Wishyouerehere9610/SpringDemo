@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping("/addSinger")
     public boolean addSinger() {
         User user = new User();
-        user.setName("21 Savage");
+        user.setName("Playboi Carti");
         user.setType("Trap");
         return userService.addSinger(user);
     }
